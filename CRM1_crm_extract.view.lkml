@@ -1,6 +1,6 @@
 include: "CRM0_data_cleansing.view.lkml"
 
-view: crm_extract{
+view: crm_extract {
   sql_table_name: ${crm_data_cleansing.SQL_TABLE_NAME} ;;
 
   dimension: id {
