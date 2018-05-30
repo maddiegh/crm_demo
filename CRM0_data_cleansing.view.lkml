@@ -17,7 +17,7 @@ view: crm_data_cleansing {
               where emailengagementstatus in ('D', 'R')     /*campaigns with control*/
               union
               select distinct product||to_date(senddatetime)||campaigncode||coalesce(mailing_name,' ')||coalesce(mailing_id,0) as id
-              from PPRESENTATION.CRM_DEMO
+              from PRESENTATION.CRM_DEMO
               where
                             (
                             coalesce(mailing_name, flowchartname) like '%Activation%'   --definition for lights out
