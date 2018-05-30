@@ -1,76 +1,40 @@
 connection: "snowlooker"
 
-# include all the views
-include: "*.view"
+week_start_day: friday
 
-# include all the dashboards
-include: "*.dashboard"
+case_sensitive: no
 
-datagroup: crm_demo_default_datagroup {
-  # sql_trigger: SELECT MAX(id) FROM etl_log;;
-  max_cache_age: "1 hour"
+
+include: "CRM*.view"
+
+datagroup: crm_sandbox_default_datagroup {
+  sql_trigger: SELECT MAX(senddatetime) FROM PRESENTATION_CRM.CPR_XLS_EXTRACT_20180323;;
+  max_cache_age: "12 hour"
 }
 
-persist_with: crm_demo_default_datagroup
+persist_with: crm_sandbox_default_datagroup
 
-explore: distribution_centers {}
+explore: cpr_extract {
 
-explore: etl_jobs {}
-
-explore: events {
-  join: users {
+  label: "✉️ CPR Report"
+  view_label: "(1) CPR Raw Data"
+  description: "Replacement for the excel CPR report, using the same source data"
+  view_name: cpr_extract
+  join: cpr_mailing_level_summary {
+    view_label: "(3) Mailing Level Fields"
     type: left_outer
-    sql_on: ${events.user_id} = ${users.id} ;;
+    sql_on: ${cpr_extract.mailing_level_id} = ${cpr_mailing_level_summary.mailing_level_id} ;;
     relationship: many_to_one
   }
-}
-
-explore: inventory_items {
-  join: products {
+  join: cpr_segment_level_summary {
     type: left_outer
-    sql_on: ${inventory_items.product_id} = ${products.id} ;;
-    relationship: many_to_one
-  }
-
-  join: distribution_centers {
-    type: left_outer
-    sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
-    relationship: many_to_one
-  }
-}
-
-explore: order_items {
-  join: users {
-    type: left_outer
-    sql_on: ${order_items.user_id} = ${users.id} ;;
+    sql_on: ${cpr_extract.segment_level_id} = ${cpr_segment_level_summary.segment_level_id} ;;
     relationship: many_to_one
   }
 
-  join: inventory_items {
+  join: crm_waterfall_view {
     type: left_outer
-    sql_on: ${order_items.inventory_item_id} = ${inventory_items.id} ;;
-    relationship: many_to_one
-  }
-
-  join: products {
-    type: left_outer
-    sql_on: ${inventory_items.product_id} = ${products.id} ;;
-    relationship: many_to_one
-  }
-
-  join: distribution_centers {
-    type: left_outer
-    sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
+    sql_on: ${cpr_extract.mailing_level_id} = ${crm_waterfall_view.mailing_level_id} ;;
     relationship: many_to_one
   }
 }
-
-explore: products {
-  join: distribution_centers {
-    type: left_outer
-    sql_on: ${products.distribution_center_id} = ${distribution_centers.id} ;;
-    relationship: many_to_one
-  }
-}
-
-explore: users {}
