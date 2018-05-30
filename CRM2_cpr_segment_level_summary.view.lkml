@@ -131,23 +131,22 @@ view: cpr_segment_level_summary {
 
     dimension: product {
       view_label: "(2) Mailing and Segment Level"
-      description: "Business Brand - skyBET, skyVEGAS, skyBINGO, skyPOKER or skyCASINO"
       type: string
       sql: ${TABLE}.PRODUCT ;;
     }
 
-    dimension: product_logo {
-      view_label: "(2) Mailing and Segment Level"
-      description: "Logo for each brand"
-      hidden:  yes
-      sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
-          when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
-    end;;
-      html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
-    }
+#     dimension: product_logo {
+#       view_label: "(2) Mailing and Segment Level"
+#       description: "Logo for each brand"
+#       hidden:  yes
+#       sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
+#           when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
+#     end;;
+#       html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
+#     }
 
     dimension_group: send {
       view_label: "(2) Mailing and Segment Level"

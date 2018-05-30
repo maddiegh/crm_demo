@@ -112,7 +112,6 @@ view: cpr_extract{
   }
 
   dimension: product {
-    description: "Business Brand - skyBET, skyVEGAS, skyBINGO, skyPOKER or skyCASINO"
     type: string
     sql: ${TABLE}.PRODUCT ;;
 # The link below creates a drill through to the Campaign Level dashboard; it passes through a filter on product
@@ -120,17 +119,17 @@ view: cpr_extract{
       url:"https://redkite.eu.looker.com/dashboards/45?Product={{ value | url_encode }}"}
   }
 
-  dimension: product_logo {
-    description: "Logo for each brand"
-    #hidden:  yes
-    sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
-          when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
-          when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
-    end;;
-    html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
-  }
+#   dimension: product_logo {
+#     description: "Logo for each brand"
+#     #hidden:  yes
+#     sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
+#           when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
+#           when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
+#     end;;
+#     html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
+#   }
 
   dimension: treatment_or_control {
     description: "Field used to identify treatment and control subscribers"
