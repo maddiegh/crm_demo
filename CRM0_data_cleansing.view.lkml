@@ -1,4 +1,4 @@
-view: cpr_data_cleansing {
+view: crm_data_cleansing {
   derived_table: {
     sql: select
               t1.*,
@@ -9,15 +9,15 @@ view: cpr_data_cleansing {
 
               case when t3.id is not null then 'With Mailing Selection Issue' else 'With No Issue' end as selection_issue /*flag campaigns with multiple rows per combination of treatment group and customer segment*/
 
-        from PRESENTATION_CRM.CPR_XLS_EXTRACT t1
+        from PRESENTATION.CRM_DEMO t1
         left join
               (
               select distinct product||to_date(senddatetime)||campaigncode||coalesce(mailing_name,' ')||coalesce(mailing_id,0) as id
-              from PRESENTATION_CRM.CPR_XLS_EXTRACT
+              from PRESENTATION.CRM_DEMO
               where emailengagementstatus in ('D', 'R')     /*campaigns with control*/
               union
               select distinct product||to_date(senddatetime)||campaigncode||coalesce(mailing_name,' ')||coalesce(mailing_id,0) as id
-              from PRESENTATION_CRM.CPR_XLS_EXTRACT
+              from PPRESENTATION.CRM_DEMO
               where
                             (
                             coalesce(mailing_name, flowchartname) like '%Activation%'   --definition for lights out
@@ -33,7 +33,7 @@ view: cpr_data_cleansing {
         left join
               (
               select distinct product||to_date(senddatetime)||campaigncode||coalesce(mailing_name,' ')||coalesce(mailing_id,0) as id
-              from PRESENTATION_CRM.CPR_XLS_EXTRACT
+              from PRESENTATION.CRM_DEMO
               where not
                             (
                             coalesce(mailing_name, flowchartname) like '%Activation%'   --definition for lights out

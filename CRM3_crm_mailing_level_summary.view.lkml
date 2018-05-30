@@ -1,5 +1,5 @@
-view: cpr_mailing_level_summary {
-  label: "CPR Mailing Level Summary"
+view: crm_mailing_level_summary {
+  label: "CRM Mailing Level Summary"
   derived_table: {
     sql:  select
           product,
@@ -96,7 +96,7 @@ view: cpr_mailing_level_summary {
 
 
 
-          from PRESENTATION_CRM.CPR_XLS_EXTRACT
+          from PRESENTATION.CRM_DEMO
 
           where emailengagementstatus in ('A','B','D', 'R')
 

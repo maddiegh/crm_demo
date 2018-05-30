@@ -1,4 +1,4 @@
-view: cpr_segment_level_summary {
+view: crm_segment_level_summary {
   derived_table: {
     sql:
       select      product,
@@ -101,7 +101,7 @@ view: cpr_segment_level_summary {
               (
               select t1.*,
                   max(case when emailengagementstatus in ('D', 'R') then 1 else 0 end) over (partition by product,to_date(senddatetime),campaigncode,mailing_name,mailing_id) as has_control_flag
-              from PRESENTATION_CRM.CPR_XLS_EXTRACT t1
+              from PRESENTATION.CRM_DEMO t1
 
               where emailengagementstatus in ('A','B','D', 'R')
               )
@@ -168,7 +168,7 @@ view: cpr_segment_level_summary {
       group_label: "Send Date"
       sql: TO_CHAR(TO_DATE(DATEADD('day', (0 - MOD(EXTRACT(DOW FROM ${TABLE}.senddatetime )::integer - 5 + 7, 7)), ${TABLE}.senddatetime )), 'YYYY-MM-DD') ;;
       link: {label: "Campaigns breakdown"
-        url:"https://redkite.eu.looker.com/dashboards/45?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['cpr_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['cpr_extract.selection_issue'] | url_encode }}"
+        url:"https://redkite.eu.looker.com/dashboards/45?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"
       }
 #     required_fields: [cpr_segment_level_summary.product]
     }
@@ -473,11 +473,11 @@ view: cpr_segment_level_summary {
       label: "Negative incremental"
       type: number
       hidden:yes
-      sql: case when {% parameter cpr_mailing_level_summary.select_metric  %} = 'actives' and ${incremental_actives_segment_level} < 0 then ${incremental_actives_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric  %}  = 'bet_days' and ${incremental_bet_days_segment_level} < 0 then ${incremental_bet_days_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric  %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} < 0 then ${incremental_stakes_normalised_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric  %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} < 0 then ${incremental_margin_normalised_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric  %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} < 0 then ${incremental_free_bets_normalised_segment_level}
+      sql: case when {% parameter crm_mailing_level_summary.select_metric  %} = 'actives' and ${incremental_actives_segment_level} < 0 then ${incremental_actives_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'bet_days' and ${incremental_bet_days_segment_level} < 0 then ${incremental_bet_days_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} < 0 then ${incremental_stakes_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} < 0 then ${incremental_margin_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} < 0 then ${incremental_free_bets_normalised_segment_level}
         end;;
 
         value_format_name: decimal_0
@@ -503,11 +503,11 @@ view: cpr_segment_level_summary {
         label: "Positive incremental"
         type: number
         hidden:yes
-        sql: case when {% parameter cpr_mailing_level_summary.select_metric %} = 'actives' and ${incremental_actives_segment_level} >= 0 then ${incremental_actives_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric %}  = 'bet_days' and ${incremental_bet_days_segment_level} >= 0 then ${incremental_bet_days_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} >= 0 then ${incremental_stakes_normalised_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} >= 0 then ${incremental_margin_normalised_segment_level}
-                  when {% parameter cpr_mailing_level_summary.select_metric %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} >= 0 then ${incremental_free_bets_normalised_segment_level}
+        sql: case when {% parameter crm_mailing_level_summary.select_metric %} = 'actives' and ${incremental_actives_segment_level} >= 0 then ${incremental_actives_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'bet_days' and ${incremental_bet_days_segment_level} >= 0 then ${incremental_bet_days_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} >= 0 then ${incremental_stakes_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} >= 0 then ${incremental_margin_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} >= 0 then ${incremental_free_bets_normalised_segment_level}
         end;;
 
           value_format_name: decimal_0
@@ -733,14 +733,14 @@ view: cpr_segment_level_summary {
           description: "Displays margin attribution for the selected metric - Only works if the filter 'Select Metric' is on"
           type: number
           hidden:yes
-          label_from_parameter: cpr_mailing_level_summary.select_metric
+          label_from_parameter: crm_mailing_level_summary.select_metric
           value_format:  "\"£\"#,##0.0,\" k\""
           sql:  case
-                     when {% parameter cpr_mailing_level_summary.select_metric %} = 'actives' then ${actives_contribution_segment_level}
-                     when {% parameter cpr_mailing_level_summary.select_metric %} = 'bet_days' then ${bet_days_contribution_segment_level}
-                     when {% parameter cpr_mailing_level_summary.select_metric %} = 'stakes_normalised' then ${stakes_normalised_contribution_segment_level}
-                     when {% parameter cpr_mailing_level_summary.select_metric %} = 'margin_normalised' then ${margin_normalised_contribution_segment_level}
-                     when {% parameter cpr_mailing_level_summary.select_metric %} = 'free_bets_normalised' then ${free_bets_normalised_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'actives' then ${actives_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'bet_days' then ${bet_days_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'stakes_normalised' then ${stakes_normalised_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'margin_normalised' then ${margin_normalised_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'free_bets_normalised' then ${free_bets_normalised_contribution_segment_level}
                 end ;;
         }
 

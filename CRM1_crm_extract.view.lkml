@@ -1,10 +1,10 @@
 include: "CRM0_data_cleansing.view.lkml"
 
-view: cpr_extract{
-  sql_table_name: ${cpr_data_cleansing.SQL_TABLE_NAME} ;;
+view: crm_extract{
+  sql_table_name: ${crm_data_cleansing.SQL_TABLE_NAME} ;;
 
   dimension: id {
-    description: "Unique primary key for each entry in the CPR extract"
+    description: "Unique primary key for each entry in the CRM extract"
     primary_key: yes
     type: string
     # string here could cause speed issues - need to fix key at source, not this hack
@@ -199,7 +199,7 @@ view: cpr_extract{
     sql: TO_CHAR(TO_DATE(DATEADD('day', (0 - MOD(EXTRACT(DOW FROM ${TABLE}.SENDDATETIME)::integer - 5 + 7, 7)), ${TABLE}.SENDDATETIME)), 'YYYY-MM-DD') ;;
 # The link below creates a drill through to the Campaign Level dashoard; it passes through filters on product and the selection date (extracts week commencing = 'given date')
     link: {label: "Campaigns breakdown"
-      url:"https://redkite.eu.looker.com/dashboards/45?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['cpr_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['cpr_extract.selection_issue'] | url_encode }}"}
+      url:"https://redkite.eu.looker.com/dashboards/45?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"}
   }
 
   dimension: sent_date_filter {

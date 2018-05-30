@@ -68,7 +68,7 @@ view: crm_waterfall_view {
           1.0*coalesce(control_net_profit_margin_normalised,0)+coalesce(actives_contribution,0)+coalesce(bet_days_contribution,0)+coalesce(stakes_normalised_contribution,0)
            +coalesce(margin_normalised_contribution,0)+coalesce(free_bets_normalised_contribution,0) as total_net_profit_margin_normalised
 
-          from PRESENTATION_CRM.CPR_XLS_EXTRACT
+          from PRESENTATION.CRM_DEMO
 
           where emailengagementstatus in ('A','B','D', 'R')
           group by 1,2,3,4,5
