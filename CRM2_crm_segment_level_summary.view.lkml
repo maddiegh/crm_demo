@@ -168,7 +168,7 @@ view: crm_segment_level_summary {
       group_label: "Send Date"
       sql: TO_CHAR(TO_DATE(DATEADD('day', (0 - MOD(EXTRACT(DOW FROM ${TABLE}.senddatetime )::integer - 5 + 7, 7)), ${TABLE}.senddatetime )), 'YYYY-MM-DD') ;;
       link: {label: "Campaigns breakdown"
-        url:"https://redkite.eu.looker.com/dashboards/45?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"
+        url:"https://redkitedemo.eu.looker.com/dashboards/11?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"
       }
 #     required_fields: [cpr_segment_level_summary.product]
     }
@@ -188,7 +188,7 @@ view: crm_segment_level_summary {
       type: string
       sql: ${TABLE}.MAILING_NAME ;;
       link: {label: "Details about this mailing"
-        url:"https://redkite.eu.looker.com/dashboards/46?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
+        url:"https://redkitedemo.eu.looker.com/dashboards/12?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
     }
 
     dimension: mailing_name_with_date {
@@ -198,7 +198,7 @@ view: crm_segment_level_summary {
       sql: ${send_date}||' '|| ${TABLE}.MAILING_NAME ;;
       # The link below creates a drill through to the Campaign Drilldown dashboard; it passes through a filter on mailing name
       link: {label: "Details about this mailing"
-        url:"https://redkite.eu.looker.com/dashboards/46?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
+        url:"https://redkitedemo.eu.looker.com/dashboards/12?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
       #&Product={{ _filters['cpr_extract.product'] | url_encode }}
       full_suggestions: yes
     }

@@ -4,6 +4,7 @@ week_start_day: friday
 
 case_sensitive: no
 
+include: "*.dashboard" # include all the dashboards
 
 include: "CRM*.view"
 
