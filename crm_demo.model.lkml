@@ -1,4 +1,4 @@
-connection: "snowlooker"
+connection: "redkite_demo_snowflake"
 
 week_start_day: friday
 
