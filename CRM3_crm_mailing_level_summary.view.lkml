@@ -595,7 +595,7 @@ view: crm_mailing_level_summary {
                   when {% condition dynamic_logo_filter %} 'Home & Garden' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100cc6aa4a998d558e35e6/1527778521830/homeandgarden.jpeg'
                   else 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b10295c575d1fe674180bcc/1527785827788/fakelogo.jpeg'
                   end;;
-            html: <img src="{{ value }}" width="100" height="100" /> ;;
+            html: <img src="{{ value }}" width="200" height="200" /> ;;
 
           }
 
