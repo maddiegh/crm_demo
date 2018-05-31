@@ -587,13 +587,13 @@ view: crm_mailing_level_summary {
                     case when {% condition dynamic_logo_filter %} 'Furniture' {% endcondition %} then 1 else 0 end +
                     case when {% condition dynamic_logo_filter %} 'Beauty' {% endcondition %} then 1 else 0 end +
                     case when {% condition dynamic_logo_filter %} 'Home & Garden' {% endcondition %} then 1 else 0 end <> 1
-                    then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b10295c575d1fe674180bcc/1527785827788/fakelogo.jpeg'
+                    then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b102ed070a6adf99f2618fb/1527787220709/fakelogo2.jpeg'
                   when {% condition dynamic_logo_filter %} 'Electricals' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100d03352f53b071710ab3/1527778567044'
                   when {% condition dynamic_logo_filter %} 'Sport & Leisure' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100c790e2e7296bcc5a6a4/1527778433219/sport.jpeg'
                   when {% condition dynamic_logo_filter %} 'Furniture' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100ce4352f53b0717104c4/1527778535695'
                   when {% condition dynamic_logo_filter %} 'Beauty' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100c980e2e7296bcc5ac25/1527778463387/beauty.jpeg'
                   when {% condition dynamic_logo_filter %} 'Home & Garden' {% endcondition %} then 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b100cc6aa4a998d558e35e6/1527778521830/homeandgarden.jpeg'
-                  else 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b10295c575d1fe674180bcc/1527785827788/fakelogo.jpeg'
+                  else 'https://static1.squarespace.com/static/5a27fde0d74cff1ed0580900/t/5b102ed070a6adf99f2618fb/1527787220709/fakelogo2.jpeg?format=1500w'
                   end;;
             html: <img src="{{ value }}" width="200" height="200" /> ;;
 
