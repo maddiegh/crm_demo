@@ -4,7 +4,7 @@
 
 The Dashboards in CRM have been designed to go from a high level overview down to actionable, campaign level insight.
 
-[1. CRM Overview](https://redkite.eu.looker.com/dashboards/10) 👉 [2. CRM Campaign Level](https://redkite.eu.looker.com/dashboards/11) 👉 [3. CRM Campaign Drilldown](https://redkite.eu.looker.com/dashboards/12)
+[1. CRM Overview](https://redkitedemo.eu.looker.com/dashboards/10) 👉 [2. CRM Campaign Level](https://redkitedemo.eu.looker.com/dashboards/11) 👉 [3. CRM Campaign Drilldown](https://redkitedemo.eu.looker.com/dashboards/12)
 
 **1. CRM Overview Dashboard**
 This dashboard is built around Incremental Net Margin and guides a Looker user into understanding why it changed over a period (defaulted to week on week).
