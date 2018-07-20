@@ -80,11 +80,11 @@ view: crm_mailing_level_summary {
 
           1.0*(actives_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - actives_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_actives_campaign_level,
 
-          1.0*(bet_days_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - bet_days_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_visits_campaign_level,
+          1.0*(bet_days_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - bet_days_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as  incremental_bet_days_campaign_level,
 
           1.0*(stakes_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - stakes_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_stakes_campaign_level,
 
-          1.0*(stakes_normalised_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - stakes_normalised_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_total_spend_normalised_campaign_level,
+          1.0*(stakes_normalised_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - stakes_normalised_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_stakes_normalised_campaign_level,
 
           1.0*(margin_treatment_campaign_level/nullif(unique_subscribers_treatment_campaign_level,0) - margin_control_campaign_level/nullif(unique_subscribers_control_campaign_level,0)) * unique_subscribers_treatment_campaign_level as incremental_margin_campaign_level,
 
@@ -172,14 +172,14 @@ view: crm_mailing_level_summary {
     sql: ${TABLE}.AVERAGE_BET_DAYS_CONTROL_CAMPAIGN_LEVEL ;;
   }
 
-  measure: total_spend_per_bet_day_treatment_campaign_level {
+  measure: total_spend_per_visit_treatment_campaign_level {
     description: "Average stake per day for treatment subscribers, calculated at mailing level"
     type: average
     hidden: yes
     sql: ${TABLE}.STAKE_PER_BET_DAY_TREATMENT_CAMPAIGN_LEVEL ;;
   }
 
-  measure: total_spend_per_bet_day_control_campaign_level {
+  measure: total_spend_per_visit_control_campaign_level {
     description: "Average stake per day for control subscribers, calculated at mailing level"
     type: average
     hidden: yes
@@ -535,9 +535,9 @@ view: crm_mailing_level_summary {
       parameter: incremental_visitors_or_net_profit {
         description: "Field which allows switching between incremental actives, incremental net profit margin and incremental net profit margin normalised. To be used when doing analysis at campaign level (not customer segment level)"
         type: string
-        hidden:yes
+        #hidden:yes
         allowed_value: {
-          label: "Incremental Actives"
+          label: "Incremental Visitors"
           value: "incremental_visitors_campaign_level"
         }
 
@@ -553,7 +553,7 @@ view: crm_mailing_level_summary {
         description: "This is a value which dynamically changes based on the field called incremental_active_or_net_profit"
         drill_fields: [send_date, mailing_name, incremental_net_profit_margin_normalised_campaign_level, incremental_visitors_campaign_level, incremental_visits_campaign_level, incremental_total_spend_normalised_campaign_level, incremental_margin_normalised_campaign_level, incremental_returns_normalised_campaign_level]
         type: number
-        hidden:yes
+        #hidden:yes
         sql: case when {% parameter incremental_visitors_or_net_profit %} = 'incremental_visitors_campaign_level' then ${incremental_visitors_campaign_level}
                   when {% parameter incremental_visitors_or_net_profit %}  = 'incremental_net_profit_margin_normalised_campaign_level' then ${incremental_net_profit_margin_normalised_campaign_level}
         end;;
@@ -561,7 +561,7 @@ view: crm_mailing_level_summary {
           value_format_name: decimal_0
           html:
               <a href="#drillmenu" target="_self">
-              {% assign var=_filters['incremental_actives_or_net_profit']  %}
+              {% assign var=_filters['incremental_visitors_or_net_profit']  %}
               {% if "incremental^_net^_profit^_margin^_normalised^_campaign^_level" == var %}
                   <font color="black">£{{ rendered_value }}</font>
               {% elsif "incremental^_visitors^_campaign^_level" == var %}
