@@ -135,19 +135,6 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.PRODUCT ;;
     }
 
-#     dimension: product_logo {
-#       view_label: "(2) Mailing and Segment Level"
-#       description: "Logo for each brand"
-#       hidden:  yes
-#       sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
-#           when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
-#     end;;
-#       html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
-#     }
-
     dimension_group: send {
       view_label: "(2) Mailing and Segment Level"
       description: "The date when the communication was sent, grouped into different dimensions"
@@ -215,6 +202,7 @@ view: crm_segment_level_summary {
       view_label: "(2) Mailing and Segment Level"
       group_label: "Treatment Metrics"
       description: "Total distinct treatment subscribers"
+      value_format: "[>=1000000]#.0,,\"M\";[>=1000]#.0,\"K\";0"
       type: sum
       #hidden: yes
       sql:${TABLE}.UNIQUE_SUBSCRIBERS_TREATMENT_SEGMENT_LEVEL ;;
@@ -237,7 +225,7 @@ view: crm_segment_level_summary {
       sql: ${unique_subscribers_control}/nullif(${unique_subscribers_control}+${unique_subscribers_treatment},0) ;;
     }
 
-    measure: actives_treatment {
+    measure: visitors_treatment {
       view_label: "(2) Mailing and Segment Level"
       group_label: "Treatment Metrics"
       description: "Total distinct treatment subscribers who have placed a bet within the outcome window"
@@ -246,7 +234,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.ACTIVES_TREATMENT_SEGMENT_LEVEL;;
     }
 
-    measure: actives_control {
+    measure: visitors_control {
       view_label: "(2) Mailing and Segment Level"
       group_label: "Control Metrics"
       description: "Total distinct control subscribers who have placed a bet within the outcome window"
@@ -255,7 +243,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.ACTIVES_CONTROL_SEGMENT_LEVEL;;
     }
 
-    measure: incremental_actives_segment_level {
+    measure: incremental_visitors_segment_level {
       description: "Number of active subscribers attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
       group_label: "Incrementals"
       view_label: "(4) Segment Level Fields"
@@ -265,7 +253,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.incremental_actives_segment_level ;;
     }
 
-    measure: incremental_actives_segment_level_w_format {
+    measure: incremental_visitors_segment_level_w_format {
       description: "Number of active subscribers attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
       label:"Incremental Actives Segment Level"
       view_label: "(4) Segment Level Fields"
@@ -274,7 +262,7 @@ view: crm_segment_level_summary {
       hidden: yes
       value_format: "#,##0"
       sql: ${TABLE}.incremental_actives_segment_level ;;
-      drill_fields: [send_date, mailing_name, incremental_actives_segment_level, incremental_bet_days_segment_level, incremental_stakes_normalised_segment_level, incremental_margin_normalised_segment_level, incremental_free_bets_normalised_segment_level, incremental_net_profit_margin_normalised_segment_level]
+      drill_fields: [send_date, mailing_name, incremental_visitors_segment_level, incremental_visits_segment_level, incremental_total_spend_normalised_segment_level, incremental_margin_normalised_segment_level, incremental_returns_normalised_segment_level, incremental_net_profit_margin_normalised_segment_level]
       html:
           <a href="#drillmenu" target="_self">
           {% if value >= 0 %}
@@ -285,7 +273,7 @@ view: crm_segment_level_summary {
               </a>;;
     }
 
-    measure: bet_days_treatment {
+    measure: visits_treatment {
       view_label: "(2) Mailing and Segment Level"
       description: "Total number of days with at least one bet within the outcome window for the treatment subscribers"
       type: sum
@@ -293,7 +281,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.BET_DAYS_TREATMENT_SEGMENT_LEVEL;;
     }
 
-    measure: bet_days_control {
+    measure: visits_control {
       view_label: "(2) Mailing and Segment Level"
       description: "Total number of days with at least one bet within the outcome window for the control subscribers"
       type: sum
@@ -301,7 +289,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.BET_DAYS_CONTROL_SEGMENT_LEVEL;;
     }
 
-    measure: incremental_bet_days_segment_level {
+    measure: incremental_visits_segment_level {
       view_label: "(4) Segment Level Fields"
       group_label: "Incrementals"
       description: "Number of bet days attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
@@ -311,7 +299,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.incremental_bet_days_segment_level ;;
     }
 
-    measure: stakes_normalised_treatment {
+    measure: total_spend_normalised_treatment {
       view_label: "(2) Mailing and Segment Level"
       description: "Total stakes placed by the treatment subscribers within the outcome window, after outliers have been normalised"
       type: sum
@@ -319,7 +307,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.STAKES_NORMALISED_TREATMENT_SEGMENT_LEVEL  ;;
     }
 
-    measure: stakes_normalised_control {
+    measure: total_spend_normalised_control {
       view_label: "(2) Mailing and Segment Level"
       description: "Total stakes placed by the control subscribers within the outcome window, after outliers have been normalised"
       type: sum
@@ -327,7 +315,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.STAKES_NORMALISED_CONTROL_SEGMENT_LEVEL  ;;
     }
 
-    measure: incremental_stakes_normalised_segment_level {
+    measure: incremental_total_spend_normalised_segment_level {
       view_label: "(4) Segment Level Fields"
       group_label: "Incrementals"
       description: "Total normalised stakes attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
@@ -337,7 +325,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.incremental_stakes_normalised_segment_level ;;
     }
 
-    measure: stakes_treatment {
+    measure: total_spend_treatment {
       view_label: "(2) Mailing and Segment Level"
       description: "Total stakes placed by the treatment subscribers within the outcome window"
       type: sum
@@ -345,7 +333,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.STAKES_TREATMENT ;;
     }
 
-    measure: stakes_control {
+    measure: total_spend_control {
       view_label: "(2) Mailing and Segment Level"
       description: "Total stakes placed by the control subscribers within the outcome window"
       type: sum
@@ -353,7 +341,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.STAKES_CONTROL_SEGMENT_LEVEL;;
     }
 
-    measure: incremental_stakes_segment_level {
+    measure: incremental_total_spend_segment_level {
       view_label: "(4) Segment Level Fields"
       description: "Total stakes attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
       group_label: "Incrementals"
@@ -415,7 +403,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.incremental_margin_segment_level ;;
     }
 
-    measure: free_bets_normalised_treatment {
+    measure: returns_normalised_treatment {
       view_label: "(2) Mailing and Segment Level"
       description: "Total free bets redeemed by the treatment subscribers within the outcome window, after outliers have been normalised"
       type: sum
@@ -423,7 +411,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.FREE_BETS_NORMALISED_TREATMENT_SEGMENT_LEVEL;;
     }
 
-    measure: free_bets_normalised_control {
+    measure: returns_normalised_control {
       view_label: "(2) Mailing and Segment Level"
       description: "Total free bets redeemed by the control subscribers within the outcome window, after outliers have been normalised"
       type: sum
@@ -431,7 +419,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.FREE_BETS_NORMALISED_CONTROL_SEGMENT_LEVEL;;
     }
 
-    measure: incremental_free_bets_normalised_segment_level {
+    measure: incremental_returns_normalised_segment_level {
       view_label: "(4) Segment Level Fields"
       group_label: "Incrementals"
       description: "Total normalised free bets attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
@@ -440,7 +428,7 @@ view: crm_segment_level_summary {
       sql: -1.0*${TABLE}.incremental_free_bets_normalised_segment_level ;;
     }
 
-    measure: free_bets_treatment {
+    measure: returns_treatment {
       view_label: "(2) Mailing and Segment Level"
       description: "Total free bets redeemed by the treatment subscribers within the outcome window"
       type: sum
@@ -448,7 +436,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.FREE_BETS_TREATMENT_SEGMENT_LEVEL;;
     }
 
-    measure: free_bets_control {
+    measure: returns_control {
       view_label: "(2) Mailing and Segment Level"
       description: "Total free bets redeemed by the control subscribers within the outcome window"
       type: sum
@@ -456,7 +444,7 @@ view: crm_segment_level_summary {
       sql: ${TABLE}.FREE_BETS_CONTROL_SEGMENT_LEVEL;;
     }
 
-    measure: incremental_free_bets_segment_level {
+    measure: incremental_returns_segment_level {
       view_label: "(4) Segment Level Fields"
       group_label: "Incrementals"
       description: "Total free bets attributed to the mailing itself, calculated at segment level. To be used when doing analysis at customer segment level (not campaign level)"
@@ -473,11 +461,11 @@ view: crm_segment_level_summary {
       label: "Negative incremental"
       type: number
       hidden:yes
-      sql: case when {% parameter crm_mailing_level_summary.select_metric  %} = 'actives' and ${incremental_actives_segment_level} < 0 then ${incremental_actives_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'bet_days' and ${incremental_bet_days_segment_level} < 0 then ${incremental_bet_days_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} < 0 then ${incremental_stakes_normalised_segment_level}
+      sql: case when {% parameter crm_mailing_level_summary.select_metric  %} = 'visitors' and ${incremental_visitors_segment_level} < 0 then ${incremental_visitors_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'visits' and ${incremental_visits_segment_level} < 0 then ${incremental_visits_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'total_spend_normalised' and ${incremental_total_spend_normalised_segment_level} < 0 then ${incremental_total_spend_normalised_segment_level}
                   when {% parameter crm_mailing_level_summary.select_metric  %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} < 0 then ${incremental_margin_normalised_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} < 0 then ${incremental_free_bets_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric  %}  = 'returns_normalised' and ${incremental_returns_normalised_segment_level} < 0 then ${incremental_returns_normalised_segment_level}
         end;;
 
         value_format_name: decimal_0
@@ -503,11 +491,11 @@ view: crm_segment_level_summary {
         label: "Positive incremental"
         type: number
         hidden:yes
-        sql: case when {% parameter crm_mailing_level_summary.select_metric %} = 'actives' and ${incremental_actives_segment_level} >= 0 then ${incremental_actives_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'bet_days' and ${incremental_bet_days_segment_level} >= 0 then ${incremental_bet_days_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'stakes_normalised' and ${incremental_stakes_normalised_segment_level} >= 0 then ${incremental_stakes_normalised_segment_level}
+        sql: case when {% parameter crm_mailing_level_summary.select_metric %} = 'visitors' and ${incremental_visitors_segment_level} >= 0 then ${incremental_visitors_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'visits' and ${incremental_visits_segment_level} >= 0 then ${incremental_visits_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'total_spend_normalised' and ${incremental_total_spend_normalised_segment_level} >= 0 then ${incremental_total_spend_normalised_segment_level}
                   when {% parameter crm_mailing_level_summary.select_metric %}  = 'margin_normalised' and ${incremental_margin_normalised_segment_level} >= 0 then ${incremental_margin_normalised_segment_level}
-                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'free_bets_normalised' and ${incremental_free_bets_normalised_segment_level} >= 0 then ${incremental_free_bets_normalised_segment_level}
+                  when {% parameter crm_mailing_level_summary.select_metric %}  = 'returns_normalised' and ${incremental_returns_normalised_segment_level} >= 0 then ${incremental_returns_normalised_segment_level}
         end;;
 
           value_format_name: decimal_0
@@ -531,7 +519,7 @@ view: crm_segment_level_summary {
           sql:  ${TABLE}.perc_of_unique_subscribers_active_control_segment_level;;
         }
 
-        measure: average_bet_days_treatment_segment_level {
+        measure: average_visits_treatment_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Average number of days an active treatment subscriber placed at least one bet, calculated at segment level"
           group_label: "Ratios Treatment"
@@ -541,42 +529,12 @@ view: crm_segment_level_summary {
           sql: ${TABLE}.average_bet_days_treatment_segment_level;;
         }
 
-        # measure: stake_per_bet_day_treatment {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average stake per day for treatment subscribers"
-        #   group_label: "Ratios Treatment"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "\"£\"0.00"
-        #   sql:  ${stakes_normalised_treatment}/nullif(${bet_days_treatment},0);;
-        # }
-
-        # measure: margin_per_stake_treatment {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average assumed margin to stake ratio for the treatment subscribers"
-        #   group_label: "Ratios Treatment"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "0.00%"
-        #   sql: ${margin_normalised_treatment}/nullif(${stakes_normalised_treatment},0) ;;
-        # }
-
-        # measure: free_bet_per_unique_subscribers_treatment {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average free bet redeemed by the treatment subscribers"
-        #   group_label: "Ratios Treatment"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "\"£\"0.00"
-        #   sql:  -1.0*${free_bets_normalised_treatment}/nullif(${unique_subscribers_treatment},0);;
-        # }
-
-        measure: incremental_margin_per_stake {
+        measure: incremental_margin_per_total_spend {
           view_label: "(2) Mailing and Segment Level"
           description: "The difference between the treatment assumed margin to stake ratio and the control assumed margin to stake ratio, calculated at segment level"
           type: number
           hidden: yes
-          sql:  ${margin_normalised_treatment}/nullif(${stakes_normalised_treatment},0) - ${margin_normalised_control}/nullif(${stakes_normalised_control},0) ;;
+          sql:  ${margin_normalised_treatment}/nullif(${total_spend_normalised_treatment},0) - ${margin_normalised_control}/nullif(${total_spend_normalised_control},0) ;;
           value_format: "0.00%"
         }
 
@@ -589,54 +547,6 @@ view: crm_segment_level_summary {
           value_format: "0.00%"
         }
 
-        # The measure below needs to be revisited if we want to show it, because we need to
-        # decide if we are using averages or sums for calculations
-        # measure: average_bet_days_control {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average number of days active control subscribers placed at least one bet"
-        #   group_label: "Ratios Control"
-        #   type: number
-        #   #hidden:yes
-        #   value_format: "0.000"
-        #   sql:  ${bet_days_control}/nullif(${actives_control},0);;
-        # }
-
-        # The measure below needs to be revisited if we want to show it, because we need to
-        # decide if we are using averages or sums for calculations
-        # measure: stake_per_bet_day_control {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average stake per day for control subscribers"
-        #   #REVIEW
-        #   group_label: "Ratios Control"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "\"£\"0.00"
-        #   sql:  ${stakes_normalised_control}/nullif(${bet_days_control},0);;
-        # }
-
-        # The measure below needs to be revisited if we want to show it, because we need to
-        # decide if we are using averages or sums for calculations
-        # measure: margin_per_stake_control {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average margin to stake ratio for the control subscribers"
-        #   group_label: "Ratios Control"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "0.00%"
-        #   sql: ${margin_normalised_control}/nullif(${stakes_normalised_control},0) ;;
-        # }
-
-        # measure: free_bet_per_unique_subscribers_control {
-        #   view_label: "(2) Mailing and Segment Level"
-        #   description: "Average free bet redeemed by the control subscribers"
-        #   group_label: "Ratios Control"
-        #   type: number
-        #   #hidden: yes
-        #   value_format: "\"£\"0.00"
-        #   sql:  -1.0*${free_bets_normalised_control}/nullif(${unique_subscribers_control},0);;
-        # }
-
-
         measure: control_net_profit_margin_normalised_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Scaled net assumed margin normalised which would have been expected if the mailing had not been sent, calculated at segment level"
@@ -646,7 +556,7 @@ view: crm_segment_level_summary {
           sql: case when ${TABLE}.has_control_flag = 0  then 0 else ${TABLE}.CONTROL_NET_PROFIT_MARGIN_NORMALISED_SEGMENT_LEVEL end ;;
         }
 
-        measure: actives_contribution_segment_level {
+        measure: visitors_contribution_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Net margin value attributed to incremental active subscribers, calculated at segment level"
           group_label: "Margin Attribution"
@@ -655,7 +565,7 @@ view: crm_segment_level_summary {
           sql:case when ${TABLE}.has_control_flag  = 0  then 0 else ${TABLE}.ACTIVES_CONTRIBUTION_SEGMENT_LEVEL END;;
         }
 
-        measure: bet_days_contribution_segment_level {
+        measure: visits_contribution_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Net margin value attributed to incremental bet days, calculated at segment level"
           group_label: "Margin Attribution"
@@ -664,7 +574,7 @@ view: crm_segment_level_summary {
           sql: Case when ${TABLE}.has_control_flag  = 0  then 0 else ${TABLE}.BET_DAYS_CONTRIBUTION_SEGMENT_LEVEL end;;
         }
 
-        measure: stakes_normalised_contribution_segment_level {
+        measure: total_spend_normalised_contribution_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Net margin value attributed to incremental normalised stakes, calculated at segment level"
           group_label: "Margin Attribution"
@@ -682,7 +592,7 @@ view: crm_segment_level_summary {
           sql: Case when ${TABLE}.has_control_flag = 0  then 0 else ${TABLE}.MARGIN_NORMALISED_CONTRIBUTION_SEGMENT_LEVEL end;;
         }
 
-        measure: free_bets_normalised_contribution_segment_level {
+        measure: returns_normalised_contribution_segment_level {
           view_label: "(4) Segment Level Fields"
           description: "Incremental normalised value of free bets in the treatment group, calculated at segment level"
           group_label: "Margin Attribution"
@@ -717,7 +627,7 @@ view: crm_segment_level_summary {
           value_format: "\"£\"#,###"
           sql: case when ${unique_subscribers_control} = 0  then 0 else
             ${total_net_profit_margin_normalised_segment_level}-${control_net_profit_margin_normalised_segment_level} end;;
-          drill_fields: [send_date, mailing_name, incremental_net_profit_margin_normalised_segment_level_w_format, incremental_actives_segment_level, incremental_bet_days_segment_level, incremental_stakes_normalised_segment_level, incremental_margin_normalised_segment_level, incremental_free_bets_normalised_segment_level]
+          drill_fields: [send_date, mailing_name, incremental_net_profit_margin_normalised_segment_level_w_format, incremental_visitors_segment_level, incremental_visits_segment_level, incremental_total_spend_normalised_segment_level, incremental_margin_normalised_segment_level, incremental_returns_normalised_segment_level]
           html:
               <a href="#drillmenu" target="_self">
               {% if value >= 0 %}
@@ -736,11 +646,11 @@ view: crm_segment_level_summary {
           label_from_parameter: crm_mailing_level_summary.select_metric
           value_format:  "\"£\"#,##0.0,\" k\""
           sql:  case
-                     when {% parameter crm_mailing_level_summary.select_metric %} = 'actives' then ${actives_contribution_segment_level}
-                     when {% parameter crm_mailing_level_summary.select_metric %} = 'bet_days' then ${bet_days_contribution_segment_level}
-                     when {% parameter crm_mailing_level_summary.select_metric %} = 'stakes_normalised' then ${stakes_normalised_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'visitors' then ${visitors_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'visits' then ${visits_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'total_spend_normalised' then ${total_spend_normalised_contribution_segment_level}
                      when {% parameter crm_mailing_level_summary.select_metric %} = 'margin_normalised' then ${margin_normalised_contribution_segment_level}
-                     when {% parameter crm_mailing_level_summary.select_metric %} = 'free_bets_normalised' then ${free_bets_normalised_contribution_segment_level}
+                     when {% parameter crm_mailing_level_summary.select_metric %} = 'returns_normalised' then ${returns_normalised_contribution_segment_level}
                 end ;;
         }
 

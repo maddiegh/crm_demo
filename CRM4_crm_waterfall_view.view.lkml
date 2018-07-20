@@ -11,62 +11,64 @@ view: crm_waterfall_view {
           mailing_name,
           mailing_id,
 
-          sum(case when iscontrol = 'no' then uniques else 0 end) as unique_subscribers_treatment_campaign_level,
-          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then uniques else 0 end) as unique_subscribers_control_campaign_level,
+          sum(case when iscontrol = 'no' then uniques else 0 end) as unique_subscribers_treatment,
+          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then uniques else 0 end) as unique_subscribers_control,
 
-          sum(case when iscontrol = 'no' then actives else 0 end) as actives_treatment_campaign_level,
-          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then actives else 0 end) as actives_control_campaign_level,
+          sum(case when iscontrol = 'no' then actives else 0 end) as actives_treatment,
+          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then actives else 0 end) as actives_control,
 
-          sum(case when iscontrol = 'no' then bet_days else 0 end) as bet_days_treatment_campaign_level,
-          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then bet_days else 0 end) as bet_days_control_campaign_level,
+          sum(case when iscontrol = 'no' then bet_days else 0 end) as bet_days_treatment,
+          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then bet_days else 0 end) as bet_days_control,
 
-          sum(case when iscontrol = 'no' then stakes_normalised else 0 end) as stakes_normalised_treatment_campaign_level,
-          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then stakes_normalised else 0 end) as stakes_normalised_control_campaign_level,
+          sum(case when iscontrol = 'no' then stakes_normalised else 0 end) as stakes_normalised_treatment,
+          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then stakes_normalised else 0 end) as stakes_normalised_control,
 
-          sum(case when iscontrol = 'no' then margin_normalised else 0 end) as margin_normalised_treatment_campaign_level,
-          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then margin_normalised else 0 end) as margin_normalised_control_campaign_level,
+          sum(case when iscontrol = 'no' then margin_normalised else 0 end) as margin_normalised_treatment,
+          sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then margin_normalised else 0 end) as margin_normalised_control,
 
-          -sum(case when iscontrol = 'no' then free_bets_normalised else 0 end) as free_bets_normalised_treatment_campaign_level,
-          -sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then free_bets_normalised else 0 end) as free_bets_normalised_control_campaign_level,
+          -1.0*sum(case when iscontrol = 'no' then free_bets_normalised else 0 end) as free_bets_normalised_treatment,
+          -1.0*sum(case when iscontrol = 'yes' and emailengagementstatus in ('D', 'R') then free_bets_normalised else 0 end) as free_bets_normalised_control,
 
-          1.0*coalesce(actives_treatment_campaign_level,0)/nullif(unique_subscribers_treatment_campaign_level,0) as perc_of_unique_subscribers_active_treatment,
-          1.0*coalesce(actives_control_campaign_level,0)/nullif(unique_subscribers_control_campaign_level,0) as perc_of_unique_subscribers_active_control,
+          1.0*(coalesce(actives_treatment,0)/nullif(unique_subscribers_treatment,0)) as perc_of_unique_subscribers_active_treatment,
+          1.0*(coalesce(actives_control,0)/nullif(unique_subscribers_control,0)) as perc_of_unique_subscribers_active_control,
 
-          1.0*coalesce(bet_days_treatment_campaign_level,0)/nullif(actives_treatment_campaign_level,0) as average_bet_days_treatment,
-          1.0*coalesce(bet_days_control_campaign_level,0)/nullif(actives_control_campaign_level,0) as average_bet_days_control,
+          1.0*(coalesce(bet_days_treatment,0)/nullif(actives_treatment,0)) as average_bet_days_treatment,
+          1.0*(coalesce(bet_days_control,0)/nullif(actives_control,0)) as average_bet_days_control,
 
-          1.0*coalesce(stakes_normalised_treatment_campaign_level,0)/nullif(bet_days_treatment_campaign_level,0) as stake_per_bet_day_treatment,
-          1.0*coalesce(stakes_normalised_control_campaign_level,0)/nullif(bet_days_control_campaign_level,0) as stake_per_bet_day_control,
+          1.0*(coalesce(stakes_normalised_treatment,0)/nullif(bet_days_treatment,0)) as stake_per_bet_day_treatment,
+          1.0*(coalesce(stakes_normalised_control,0)/nullif(bet_days_control,0)) as stake_per_bet_day_control,
 
-          1.0*coalesce(margin_normalised_treatment_campaign_level,0)/nullif(stakes_normalised_treatment_campaign_level,0) as margin_per_stake_treatment,
-          1.0*coalesce(margin_normalised_control_campaign_level,0)/nullif(stakes_normalised_control_campaign_level,0) as margin_per_stake_control,
+          1.0*(coalesce(margin_normalised_treatment,0)/nullif(stakes_normalised_treatment,0)) as margin_per_stake_treatment,
+          1.0*(coalesce(margin_normalised_control,0)/nullif(stakes_normalised_control,0)) as margin_per_stake_control,
 
-          1.0*coalesce(free_bets_normalised_treatment_campaign_level,0)/nullif(unique_subscribers_treatment_campaign_level,0) as free_bet_per_unique_subscribers_treatment,
-          1.0*coalesce(free_bets_normalised_control_campaign_level,0)/nullif(unique_subscribers_control_campaign_level,0) as free_bet_per_unique_subscribers_control,
+          1.0*(coalesce(free_bets_normalised_treatment,0)/nullif(unique_subscribers_treatment,0)) as free_bet_per_unique_subscribers_treatment,
+          1.0*(coalesce(free_bets_normalised_control,0)/nullif(unique_subscribers_control,0)) as free_bet_per_unique_subscribers_control,
 
-          1.0*coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_control,0)*coalesce(average_bet_days_control,0)*coalesce(stake_per_bet_day_control,0)
-          *coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0)) as control_net_profit_margin_normalised,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_control,0)*coalesce(average_bet_days_control,0)*coalesce(stake_per_bet_day_control,0)
+          *coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0))) as control_net_profit_margin_normalised,
 
-          1.0*coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_control,0)*coalesce(stake_per_bet_day_control,0)
-          *coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0)) - coalesce(control_net_profit_margin_normalised,0) as actives_contribution,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_control,0)
+                *coalesce(stake_per_bet_day_control,0)*coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0))
+                -coalesce(control_net_profit_margin_normalised,0)) as actives_contribution,
 
-          1.0*coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)*coalesce(stake_per_bet_day_control,0)
-          *coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0)) - coalesce(control_net_profit_margin_normalised,0) - coalesce(actives_contribution,0) as bet_days_contribution,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)
+                *coalesce(stake_per_bet_day_control,0)*coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0))
+                -coalesce(control_net_profit_margin_normalised,0)-coalesce(actives_contribution,0)) as bet_days_contribution,
 
-          1.0*coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)*coalesce(stake_per_bet_day_treatment,0)
-          *coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0)) - coalesce(control_net_profit_margin_normalised,0) - coalesce(actives_contribution,0)
-          -coalesce(bet_days_contribution,0) as stakes_normalised_contribution,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)
+                *coalesce(stake_per_bet_day_treatment,0)*coalesce(margin_per_stake_control,0)+coalesce(free_bet_per_unique_subscribers_control,0))
+                -coalesce(control_net_profit_margin_normalised,0)-coalesce(actives_contribution,0)-coalesce(bet_days_contribution,0)) as stakes_normalised_contribution,
 
-          1.0*coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)*coalesce(stake_per_bet_day_treatment,0)
-          *coalesce(margin_per_stake_treatment,0)+coalesce(free_bet_per_unique_subscribers_control,0)) - coalesce(control_net_profit_margin_normalised,0)
-          -coalesce(actives_contribution,0)-coalesce(bet_days_contribution,0)-coalesce(stakes_normalised_contribution,0) as margin_normalised_contribution,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)
+                *coalesce(stake_per_bet_day_treatment,0)*coalesce(margin_per_stake_treatment,0)+coalesce(free_bet_per_unique_subscribers_control,0))
+                -coalesce(control_net_profit_margin_normalised,0)-coalesce(actives_contribution,0)-coalesce(bet_days_contribution,0)-coalesce(stakes_normalised_contribution,0)) as margin_normalised_contribution,
 
-          1.0*(coalesce(unique_subscribers_treatment_campaign_level,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)*coalesce(stake_per_bet_day_treatment,0)
-          *coalesce(margin_per_stake_treatment,0)+coalesce(free_bet_per_unique_subscribers_treatment,0)) - coalesce(control_net_profit_margin_normalised,0) - coalesce(actives_contribution,0)
-          -coalesce(bet_days_contribution,0) - coalesce(stakes_normalised_contribution,0) - coalesce(margin_normalised_contribution,0)) as free_bets_normalised_contribution,
+          1.0*(coalesce(unique_subscribers_treatment,0)*(coalesce(perc_of_unique_subscribers_active_treatment,0)*coalesce(average_bet_days_treatment,0)
+                *coalesce(stake_per_bet_day_treatment,0)*coalesce(margin_per_stake_treatment,0)+coalesce(free_bet_per_unique_subscribers_treatment,0))
+                -coalesce(control_net_profit_margin_normalised,0)-coalesce(actives_contribution,0)-coalesce(bet_days_contribution,0)
+                -coalesce(stakes_normalised_contribution,0)-coalesce(margin_normalised_contribution,0)) as free_bets_normalised_contribution,
 
-          1.0*coalesce(control_net_profit_margin_normalised,0)+coalesce(actives_contribution,0)+coalesce(bet_days_contribution,0)+coalesce(stakes_normalised_contribution,0)
-           +coalesce(margin_normalised_contribution,0)+coalesce(free_bets_normalised_contribution,0) as total_net_profit_margin_normalised
+          1.0*(coalesce(margin_normalised_treatment,0)+coalesce(free_bets_normalised_treatment,0)) as total_net_profit_margin_normalised
 
           from PRESENTATION.CRM_DEMO
 
@@ -125,53 +127,53 @@ view: crm_waterfall_view {
     sql: ${TABLE}.MAILING_ID ;;
   }
 
-  measure: actives_contribution {
+  measure: visitors_contribution {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.ACTIVES_CONTRIBUTION ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.ACTIVES_CONTRIBUTION end ;;
   }
 
-  measure: bet_days_contribution {
+  measure: visits_contribution {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.BET_DAYS_CONTRIBUTION ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.BET_DAYS_CONTRIBUTION end ;;
   }
 
-  measure: stakes_normalised_contribution {
+  measure: total_spend_normalised_contribution {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.STAKES_NORMALISED_CONTRIBUTION ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.STAKES_NORMALISED_CONTRIBUTION end ;;
   }
 
   measure: margin_normalised_contribution {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.MARGIN_NORMALISED_CONTRIBUTION ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.MARGIN_NORMALISED_CONTRIBUTION end ;;
   }
 
-  measure: free_bets_normalised_contribution {
+  measure: returns_normalised_contribution {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.FREE_BETS_NORMALISED_CONTRIBUTION ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.FREE_BETS_NORMALISED_CONTRIBUTION end ;;
   }
 
   measure: total_net_profit_margin_normalised {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.TOTAL_NET_PROFIT_MARGIN_NORMALISED ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.TOTAL_NET_PROFIT_MARGIN_NORMALISED end;;
   }
 
   measure: control_net_profit_margin_normalised {
     type: sum
     value_format: "\"£\"#,###.00"
     hidden: yes
-    sql: ${TABLE}.CONTROL_NET_PROFIT_MARGIN_NORMALISED ;;
+    sql: case when ${TABLE}.unique_subscribers_control = 0 then 0 else ${TABLE}.CONTROL_NET_PROFIT_MARGIN_NORMALISED end;;
   }
 
   dimension: aux_column {

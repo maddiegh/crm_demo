@@ -119,18 +119,6 @@ view: crm_extract {
       url:"https://redkitedemo.eu.looker.com/dashboards/11?Product={{ value | url_encode }}"}
   }
 
-#   dimension: product_logo {
-#     description: "Logo for each brand"
-#     #hidden:  yes
-#     sql:case when ${TABLE}.PRODUCT = 'skyBet' then 'Sky_Bet_Logo_-_CMYK_-2017.png'
-#           when ${TABLE}.PRODUCT = 'skyBINGO' then 'Sky-Bingo-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyCASINO' then 'Sky-Casino-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyPOKER' then 'Sky-Poker-Logo---RGB---2018.png'
-#           when ${TABLE}.PRODUCT = 'skyVEGAS' then 'Sky-Vegas-Logo---RGB---2018.png'
-#     end;;
-#     html: <img src="http://skybetcareers.com/uploads/brand-logos/{{ value }}" width="320" height="80" /> ;;
-#   }
-
   dimension: treatment_or_control {
     description: "Field used to identify treatment and control subscribers"
     sql: case when UPPER(${TABLE}.ISCONTROL) = 'TRUE' then 'Control'
@@ -138,7 +126,7 @@ view: crm_extract {
     end;;
   }
 
-  dimension: os_channel {
+  dimension: channel {
     description: "Contact channel"
     type: string
     sql: ${TABLE}.OS_CHANNEL ;;
@@ -228,6 +216,7 @@ view: crm_extract {
     description: "Total distinct subscribers selected for each mailing"
     group_label: "Mailing Performance Volumes"
     type: sum
+    value_format: "[>=1000000]#.0,,\"M\";[>=1000]#.0,\"K\";0"
     sql: ${TABLE}.UNIQUES ;;
   }
 
@@ -323,7 +312,7 @@ view: crm_extract {
     drill_fields: [mailing_name, send_date, perc_of_opens_clicked, unique_clicks, opens]
   }
 
-  measure: actives {
+  measure: visitors {
     description: "Total distinct subscribers who placed a bet within the outcome window"
     type: sum
     sql: ${TABLE}.ACTIVES ;;
@@ -333,17 +322,17 @@ view: crm_extract {
     description: "Active rate. Total distinct active subscribers divided by the total distinct subscribers selected for each mailing"
     type: number
     value_format: "0.0\%"
-    sql: ${actives}/nullif(${unique_subscribers},0)*100;;
-    drill_fields: [mailing_name, send_date, perc_of_unique_subscribers_active, actives, unique_subscribers]
+    sql: ${visitors}/nullif(${unique_subscribers},0)*100;;
+    drill_fields: [mailing_name, send_date, perc_of_unique_subscribers_active, visitors, unique_subscribers]
   }
 
-  measure: bet_days {
+  measure: visits {
     description: "Total number of days with at least one bet within the outcome window"
     type: sum
     sql: ${TABLE}.BET_DAYS ;;
   }
 
-  measure: stakes {
+  measure: total_spend {
     description: "Total stakes placed within the outcome window"
     hidden: yes
     type: sum
@@ -359,7 +348,7 @@ view: crm_extract {
     sql: ${TABLE}.MARGIN ;;
   }
 
-  measure: free_bets {
+  measure: returns {
     description: "Total value of free bets redeemed by the subscribers within the outcome window"
     hidden: yes
     type: sum
@@ -367,7 +356,7 @@ view: crm_extract {
     sql: ${TABLE}.FREE_BETS ;;
   }
 
-  measure: stakes_normalised {
+  measure: total_spend_normalised {
     description: "Total stakes placed within the outcome window, after outliers have been normalised"
     group_label: "Normalised Metrics"
     type: sum
@@ -383,7 +372,7 @@ view: crm_extract {
     sql: ${TABLE}.MARGIN_NORMALISED ;;
   }
 
-  measure: free_bets_normalised {
+  measure: returns_normalised {
     description: "Total value of free bets redeemed by the subscribers within the outcome window, after outliers have been normalised"
     group_label: "Normalised Metrics"
     type: sum
@@ -440,7 +429,7 @@ view: crm_extract {
     fields: [
       flowchart_name,
       product,
-      os_channel,
+      channel,
       mailing_id,
       mailing_name,
       subject,
@@ -452,14 +441,14 @@ view: crm_extract {
       clicks,
       unique_bounces,
       unique_unsubscribes,
-      actives,
-      bet_days,
-      stakes,
+      visitors,
+      visits,
+      total_spend,
       margin,
-      free_bets,
-      stakes_normalised,
+      returns,
+      total_spend_normalised,
       margin_normalised,
-      free_bets_normalised,
+      returns_normalised,
       lights_out_filter_match
     ]
   }
