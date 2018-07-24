@@ -116,7 +116,7 @@ view: crm_extract {
     sql: ${TABLE}.PRODUCT ;;
 # The link below creates a drill through to the Campaign Level dashboard; it passes through a filter on product
     link: {label: "Drill down into this product"
-      url:"https://redkitedemo.eu.looker.com/dashboards/11?Product={{ value | url_encode }}"}
+      url:"https://redkitedemo.eu.looker.com/dashboards/15?Product={{ value | url_encode }}"}
   }
 
   dimension: treatment_or_control {
@@ -146,7 +146,7 @@ view: crm_extract {
     sql: ${TABLE}.MAILING_NAME ;;
 # The link below creates a drill through to the Campaign Drilldown dashboard; it passes through a filter on mailing name
     link: {label: "Details about this mailing"
-      url:"https://redkitedemo.eu.looker.com/dashboards/12?Mailing%20Name={{ value | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
+      url:"https://redkitedemo.eu.looker.com/dashboards/16?Mailing%20Name={{ value | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
     #&Product={{ _filters['cpr_extract.product'] | url_encode }}
     full_suggestions: yes
   }
@@ -157,7 +157,7 @@ view: crm_extract {
     sql: ${send_date}||' '|| ${TABLE}.MAILING_NAME ;;
 # The link below creates a drill through to the Campaign Drilldown dashboard; it passes through a filter on mailing name
     link: {label: "Details about this mailing"
-      url:"https://redkitedemo.eu.looker.com/dashboards/12?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
+      url:"https://redkitedemo.eu.looker.com/dashboards/16?Mailing%20Name={{ ['mailing_name'] | url_encode }}&Send%20Date={{ ['send_date'] | url_encode }}"}
     #&Product={{ _filters['cpr_extract.product'] | url_encode }}
     full_suggestions: yes
   }
@@ -187,7 +187,7 @@ view: crm_extract {
     sql: TO_CHAR(TO_DATE(DATEADD('day', (0 - MOD(EXTRACT(DOW FROM ${TABLE}.SENDDATETIME)::integer - 5 + 7, 7)), ${TABLE}.SENDDATETIME)), 'YYYY-MM-DD') ;;
 # The link below creates a drill through to the Campaign Level dashoard; it passes through filters on product and the selection date (extracts week commencing = 'given date')
     link: {label: "Campaigns breakdown"
-      url:"https://redkitedemo.eu.looker.com/dashboards/11?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"}
+      url:"https://redkitedemo.eu.looker.com/dashboards/15?Product={{ _filters['product'] | url_encode }}&Mailing%20Send%20Date={{ value }}+for+7+days&Communication%20Type={{ _filters['crm_extract.communication_type'] | url_encode }}&Filter%20for%20Campaigns%20with%20Selection%20Issues={{ _filters['crm_extract.selection_issue'] | url_encode }}"}
   }
 
   dimension: sent_date_filter {
