@@ -4,7 +4,7 @@ view: crm_extract {
   sql_table_name: ${crm_data_cleansing.SQL_TABLE_NAME} ;;
 
   dimension: id {
-    description: "Unique primary key for each entry in the CRM extract"
+    description: "Unique  key for each entry in the CRM extract"
     primary_key: yes
     type: string
     # string here could cause speed issues - need to fix key at source, not this hack
