@@ -77,6 +77,7 @@ view: crm_data_cleansing {
   }
 
   dimension: flowchartname {
+    description: "test"
     type: string
     sql: ${TABLE}.FLOWCHARTNAME ;;
   }
