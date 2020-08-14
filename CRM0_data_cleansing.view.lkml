@@ -71,7 +71,7 @@ view: crm_data_cleansing {
     sql: ${TABLE}.TREATMENTCODE ;;
   }
 
-  dimension: campaigncode {
+  dimension: campaign_code {
     type: string
     sql: ${TABLE}.CAMPAIGNCODE ;;
   }
