@@ -16,7 +16,7 @@ datagroup: crm_sandbox_default_datagroup {
 persist_with: crm_sandbox_default_datagroup
 
 explore: crm_explore {
-
+  hidden: yes
   label: "✉️ CRM Explore"
   view_label: "(1) CRM Raw Data"
   view_name: crm_extract
